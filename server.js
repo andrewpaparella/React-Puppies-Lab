@@ -14,6 +14,7 @@ app.use(express.json());
 // to serve from the production 'build' folder
 app.use(favicon(path.join(__dirname, "build", "favicon.ico")));
 app.use(express.static(path.join(__dirname, "build")));
+app.use(require('./config/checkToken'));
 
 app.use("/api/users", puppiesRouter);
 // Configure to use port 3001 instead of 3000 during
