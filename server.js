@@ -5,7 +5,8 @@ const logger = require("morgan");
 require("dotenv").config();
 require("./config/database");
 
-const puppiesRouter = require("./routes/api/users");
+const usersRouter = require("./routes/api/users");
+const puppiesRouter = require('./routes/Puppies/Puppies')
 
 const app = express();
 app.use(logger("dev"));
@@ -16,7 +17,8 @@ app.use(favicon(path.join(__dirname, "build", "favicon.ico")));
 app.use(express.static(path.join(__dirname, "build")));
 app.use(require('./config/checkToken'));
 
-app.use("/api/users", puppiesRouter);
+app.use("/api/users", usersRouter);
+app.use('/api/puppies', puppiesRouter)
 // Configure to use port 3001 instead of 3000 during
 // development to avoid collision with React's dev server
 const port = process.env.PORT || 3001;

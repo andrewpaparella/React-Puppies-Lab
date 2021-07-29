@@ -6,7 +6,7 @@ export default function AuthPage({setUser}) {
         <div className="AuthPage">
             <h1>AuthPage</h1>
             <SignUpForm setUser={setUser} />
-            <LoginForm />
+            <LoginForm setUser={setUser} />
         </div>
     )
 }
