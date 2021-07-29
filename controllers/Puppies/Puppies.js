@@ -3,7 +3,9 @@ const Puppy = require('../../models/Puppy')
 module.exports = {
     create,
     index,
-    show
+    show,
+    update,
+    delete: deleteOne
 }
 
 async function create(req,res) {
@@ -19,4 +21,14 @@ async function index(req, res) {
 async function show(req,res){
     const puppy = await Puppy.findById(req.params.id)
     res.json(puppy)
+}
+
+async function update(req, res){
+    const puppy = await Puppy.findByIdAndUpdate(req.params.id, req.body, {new: true})
+    res.status(200).json(puppy)
+}
+
+async function deleteOne(req, res) {
+    const deletedPuppy = await Puppy.findByIdAndRemove(req.params.id);
+    res.status(200).json(deletedPuppy)
 }

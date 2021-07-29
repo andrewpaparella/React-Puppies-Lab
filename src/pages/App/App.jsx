@@ -8,6 +8,7 @@ import "./App.css";
 import PuppiesPage from "../PuppiesPage/PuppiesPage";
 import * as puppiesAPI from '../../utilities/puppies-api';
 import PuppyDetailPage from "../PuppyDetailPage/PuppyDetailPage";
+import EditPuppyPage from '../EditPuppyPage/EditPuppyPage';
 
 export default function App() {
   const [user, setUser] = useState(getUser());
@@ -15,7 +16,7 @@ export default function App() {
   const history = useHistory();
 
   useEffect(() => {
-		history.push('/')
+		history.push('/puppies')
 	}, [puppies, history])
 
   useEffect(() => {
@@ -25,6 +26,17 @@ export default function App() {
     } 
     getPuppies();
   },[]);
+
+  async function handleUpdatePuppy(pup){
+    const updatedPuppy = await puppiesAPI.update(pup);
+    const newPuppiesArray = puppies.map(p => p._id === updatedPuppy._id ? updatedPuppy : p );
+    setPuppies(newPuppiesArray);
+  }
+
+  async function handleDeletePuppy(id){
+    await puppiesAPI.deleteOne(id);
+    setPuppies(puppies.filter(puppy => puppy._id !== id));
+  }
 
   return (
     <main className="App">
@@ -45,11 +57,15 @@ export default function App() {
               exact
               path="/puppies"
               render={() => {
-                return <PuppiesPage puppies={puppies} setPuppies={setPuppies} />;
+                return <PuppiesPage puppies={puppies} setPuppies={setPuppies} handleDeletePuppy={handleDeletePuppy} />;
               }}
             />
             <Route exact path="/details" render={() => {
               return <PuppyDetailPage puppies={puppies} />
+            }}
+            />
+            <Route exact path='/edit' render={() => {
+              return <EditPuppyPage handleUpdatePuppy={handleUpdatePuppy} />
             }}
             />
           </Switch>
